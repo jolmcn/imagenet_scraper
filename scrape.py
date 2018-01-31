@@ -11,12 +11,18 @@
 
 import urllib.request
 import socket
+import os
 import sys
 links = []
 #even though i'm checking for errors below, lots were still coming up. flickr reliably returns
 #images or placeholders without error, so i am parsing anything that doesn't come from 
 #flickr (there should usually be enough flickr links from image-net to satisfy training requirements
 flickr = "flickr" 
+file_path = "downloaded_images/"
+directory = os.path.dirname(file_path)
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 try:
 	data_file = sys.argv[2]
@@ -48,7 +54,7 @@ except IndexError:
 
 for link in links:
 	try:
-		urllib.request.urlretrieve(link, "downloaded_images/"+name+"_image"+str(counter)+".jpg")
+		urllib.request.urlretrieve(link, directory+"/"+name+"_image"+str(counter)+".jpg")
 		counter=counter+1
 	except urllib.error.HTTPError as err:
 		print(link)
